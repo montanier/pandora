@@ -114,11 +114,11 @@ installedLib = ""
 installedPyLib = ""
 
 if(LooseVersion(SCons.__version__) < LooseVersion("2.3.0")):
-	installedLib = env.Install(installLibDir, sharedLib, SHLIBVERSION=version)
-	installedPyLib = env.Install(installLibDir, sharedPyLib, SHLIBVERSION=version)
+	installedLib = env.Install(installLibDir, sharedLib, SHLIB_VERSION=version)
+	installedPyLib = env.Install(installLibDir, sharedPyLib, SHLIB_VERSION=version)
 else:
-	installedLib = env.InstallVersionedLib(installLibDir, sharedLib, SHLIBVERSION=version)
-	installedPyLib = env.InstallVersionedLib(installLibDir, sharedPyLib, SHLIBVERSION=version)
+	installedLib = env.InstallVersionedLib(installLibDir, sharedLib, SHLIB_VERSION=version)
+	installedPyLib = env.InstallVersionedLib(installLibDir, sharedPyLib, SHLIB_VERSION=version)
 
 
 installedHeaders = env.Install(installHeadersDir, coreHeaders)
