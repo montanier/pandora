@@ -1,5 +1,5 @@
 
-version = '0.0.1'
+version = "0.0.1"
 
 import os, platform, SCons
 from distutils.version import LooseVersion
@@ -98,11 +98,15 @@ envPython = conf.Finish()
 
 # versioned lib do not create correct links with .so in osx
 if platform.system()=='Linux':
-	sharedPyLib = envPython.SharedLibrary('lib/'+pythonLibraryName,  srcPyFiles, SHLIB_VERSION=version)
-	sharedLib = env.SharedLibrary('lib/'+libraryName, srcBaseFiles, SHLIB_VERSION=version)
+	if(LooseVersion(SCons.__version__) > LooseVersion("2.4.0")):
+		sharedPyLib = envPython.SharedLibrary('lib/'+pythonLibraryName,  srcPyFiles)
+		sharedLib = env.SharedLibrary('lib/'+libraryName, srcBaseFiles)
+	else:
+		sharedPyLib = envPython.SharedLibrary('lib/'+pythonLibraryName,  srcPyFiles, SHLIBVERSION=version)
+		sharedLib = env.SharedLibrary('lib/'+libraryName, srcBaseFiles, SHLIBVERSION=version)
 elif platform.system()=='Darwin':
-    sharedPyLib = envPython.SharedLibrary('lib/'+pythonLibraryName,  srcPyFiles)
-    sharedLib = env.SharedLibrary('lib/'+libraryName, srcBaseFiles)
+	sharedPyLib = envPython.SharedLibrary('lib/'+pythonLibraryName,  srcPyFiles)
+	sharedLib = env.SharedLibrary('lib/'+libraryName, srcBaseFiles)
 
 
 # installation
@@ -114,11 +118,15 @@ installedLib = ""
 installedPyLib = ""
 
 if(LooseVersion(SCons.__version__) < LooseVersion("2.3.0")):
-	installedLib = env.Install(installLibDir, sharedLib, SHLIB_VERSION=version)
-	installedPyLib = env.Install(installLibDir, sharedPyLib, SHLIB_VERSION=version)
+	installedLib = env.Install(installLibDir, sharedLib, SHLIBVERSION=version)
+	installedPyLib = env.Install(installLibDir, sharedPyLib, SHLIBVERSION=version)
 else:
-	installedLib = env.InstallVersionedLib(installLibDir, sharedLib, SHLIB_VERSION=version)
-	installedPyLib = env.InstallVersionedLib(installLibDir, sharedPyLib, SHLIB_VERSION=version)
+	if(LooseVersion(SCons.__version__) > LooseVersion("2.4.0")):
+		installedLib = env.InstallVersionedLib(installLibDir, sharedLib)
+		installedPyLib = env.InstallVersionedLib(installLibDir, sharedPyLib)
+	else:
+		installedLib = env.InstallVersionedLib(installLibDir, sharedLib, SHLIBVERSION=version)
+		installedPyLib = env.InstallVersionedLib(installLibDir, sharedPyLib, SHLIBVERSION=version)
 
 
 installedHeaders = env.Install(installHeadersDir, coreHeaders)
