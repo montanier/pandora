@@ -98,8 +98,8 @@ envPython = conf.Finish()
 
 # versioned lib do not create correct links with .so in osx
 if platform.system()=='Linux':
-    sharedPyLib = envPython.SharedLibrary('lib/'+pythonLibraryName,  srcPyFiles, SHLIBVERSION=version)
-    sharedLib = env.SharedLibrary('lib/'+libraryName, srcBaseFiles, SHLIBVERSION=version)
+	sharedPyLib = envPython.SharedLibrary('lib/'+pythonLibraryName,  srcPyFiles, SHLIB_VERSION=version)
+	sharedLib = env.SharedLibrary('lib/'+libraryName, srcBaseFiles, SHLIB_VERSION=version)
 elif platform.system()=='Darwin':
     sharedPyLib = envPython.SharedLibrary('lib/'+pythonLibraryName,  srcPyFiles)
     sharedLib = env.SharedLibrary('lib/'+libraryName, srcBaseFiles)
